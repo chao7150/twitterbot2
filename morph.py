@@ -1,4 +1,5 @@
 #coding: utf-8
+#copied from http://qiita.com/OvKNyRgir3BuEJj/items/9b8f2ab97ba856671848
 
 import requests
 import profile
