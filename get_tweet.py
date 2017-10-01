@@ -5,19 +5,41 @@
 import profile
 import morph
 import tweepy
+import DBconnect
+import hashlib
+import sys
+import re
 
 #keyの取得
 auth = tweepy.OAuthHandler(profile.CONSUMER_KEY, profile.CONSUMER_SECRET)
 auth.set_access_token(profile.ACCESS_TOKEN, profile.ACCESS_SECRET)
-
 api = tweepy.API(auth)
 
-recentTweets = api.user_timeline(profile.USERNAME, count = 2)
+with open("newest.txt", "r") as f:
+    since = f.read()
+
+recentTweets = api.user_timeline(profile.USERNAME, since_id=since)
+if not recentTweets:
+    print("nothing to retrieve")
+    sys.exit()
+
+ids = [int(t.id) for t in recentTweets]
+newest = max(ids)
+with open("newest.txt", "w") as f:
+    f.write(str(newest))
+
+db = DBconnect.Database()
 for t in recentTweets:
-    words = morph.morph(t.text)
-    print(words)
-    generate = words[0]
-    for w in words[1:]:
-        generate = generate + "/" +w
-    print(generate)
-    api.update_status(generate)
+    if t.text[:3] == "RT ":
+        continue
+    if t.in_reply_to_user_id:
+        continue
+    text = re.sub(r'#([\w一-龠ぁ-んァ-ヴ]+)', '', t.text)
+    text = re.sub(r'@[\w]{1,15}', '', text).strip()
+    words = morph.morph(text)
+    words.insert(0, "STARTKEY")
+    words.append("ENDKEY")
+    num = len(words)
+    for n in range(num - 2):
+        hsh = hashlib.md5((words[n] + words[n + 1] + words[n + 2]).encode('utf-8')).hexdigest()
+        db.insert([hsh, words[n], words[n + 1], words[n + 2], 1])
