@@ -16,7 +16,7 @@ auth = tweepy.OAuthHandler(profile.CONSUMER_KEY, profile.CONSUMER_SECRET)
 auth.set_access_token(profile.ACCESS_TOKEN, profile.ACCESS_SECRET)
 api = tweepy.API(auth)
 
-dirname = os.path.dirname(os.path.abspath(__name__)) + "/newest.txt"
+dirname = os.path.dirname(os.path.abspath(__file__)) + "/newest.txt"
 print(dirname)
 with open(dirname, "r") as f:
     since = f.read()
