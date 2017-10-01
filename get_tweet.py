@@ -35,7 +35,10 @@ for t in recentTweets:
     if t.in_reply_to_user_id:
         continue
     text = re.sub(r'#([\w一-龠ぁ-んァ-ヴ]+)', '', t.text)
-    text = re.sub(r'@[\w]{1,15}', '', text).strip()
+    text = re.sub(r'@[\w]{1,15}', '', text)
+    text = re.sub(r'https?://[\w/:%#\$&\?\(\)~\.=\+\-]+', '', text).strip()
+    if not text:
+        continue
     words = morph.morph(text)
     words.insert(0, "STARTKEY")
     words.append("ENDKEY")
