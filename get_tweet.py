@@ -28,7 +28,7 @@ if not recentTweets:
 
 ids = [int(t.id) for t in recentTweets]
 newest = max(ids)
-with open("newest.txt", "w") as f:
+with open(dirname, "w") as f:
     f.write(str(newest))
 
 db = DBconnect.Database()
