@@ -75,7 +75,7 @@ def response_chain(api):
         text = "".join(chain[1:])
         api.update_status(text)
     else:
-        print("no match")
+        double_chain(api)
         return
 
 if __name__ == "__main__":

@@ -9,13 +9,16 @@ import DBconnect
 import hashlib
 import sys
 import re
+import os
 
 #keyの取得
 auth = tweepy.OAuthHandler(profile.CONSUMER_KEY, profile.CONSUMER_SECRET)
 auth.set_access_token(profile.ACCESS_TOKEN, profile.ACCESS_SECRET)
 api = tweepy.API(auth)
 
-with open("newest.txt", "r") as f:
+dirname = os.path.dirname(os.path.abspath(__name__)) + "/newest.txt"
+print(dirname)
+with open(dirname, "r") as f:
     since = f.read()
 
 recentTweets = api.user_timeline(profile.USERNAME, since_id=since)
