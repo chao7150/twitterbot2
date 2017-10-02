@@ -27,9 +27,10 @@ if not recentTweets:
     sys.exit()
 
 ids = [int(t.id) for t in recentTweets]
+print(ids)
 newest = max(ids)
 with open(dirname, "w") as f:
-    f.write(str(newest))
+    print(f.write(str(newest)))
 
 db = DBconnect.Database()
 for t in recentTweets:
