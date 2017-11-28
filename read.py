@@ -8,7 +8,7 @@ import sys
 from collections import Counter
 
 def weighted_choice(res):
-    weight = [int(math.log(row[4])) for row in res]
+    weight = [int(math.log(row[4])) + 1 for row in res]
     return list(random.choices(res, weights=weight)[0])
 
 def merge_dict_add_values(dic1, dic2):
