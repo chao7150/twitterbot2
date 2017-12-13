@@ -17,17 +17,14 @@ auth.set_access_token(profile.ACCESS_TOKEN, profile.ACCESS_SECRET)
 api = tweepy.API(auth)
 
 dirname = os.path.dirname(os.path.abspath(__file__)) + "/newest.txt"
-print(dirname)
 with open(dirname, "r") as f:
     since = f.read()
 
 recentTweets = api.user_timeline(profile.USERNAME, since_id=since)
 if not recentTweets:
-    print("nothing to retrieve")
     sys.exit()
 
 ids = [int(t.id) for t in recentTweets]
-print(ids)
 newest = max(ids)
 with open(dirname, "w") as f:
     print(f.write(str(newest)))
